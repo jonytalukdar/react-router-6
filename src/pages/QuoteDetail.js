@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Routes,
-  Route,
-  useParams,
-  Outlet,
-  Link,
-  useLocation,
-} from 'react-router-dom';
+import { useParams, Outlet, Link, useLocation } from 'react-router-dom';
 import HighlightedQuote from '../components/quotes/HighlightedQuote';
 import NoQuotesFound from '../components/quotes/NoQuotesFound';
 
