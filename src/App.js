@@ -13,9 +13,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate replace to="/quotes" />} />
         <Route path="/quotes" element={<AllQuotes />} />
-        <Route path="/quotes/:id" element={<QuoteDetail />}>
+
+        <Route path="/quotes/:id/*" element={<QuoteDetail />}>
           <Route path="comments" element={<Comments />} />
         </Route>
+
         <Route path="/new-quote" element={<NewQuote />} />
         <Route path="*" element={<NoQuotesFound />} />
       </Routes>

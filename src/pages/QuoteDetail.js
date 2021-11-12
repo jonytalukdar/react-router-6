@@ -1,5 +1,12 @@
 import React from 'react';
-import { useParams, Outlet } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useParams,
+  Outlet,
+  Link,
+  useLocation,
+} from 'react-router-dom';
 import HighlightedQuote from '../components/quotes/HighlightedQuote';
 import NoQuotesFound from '../components/quotes/NoQuotesFound';
 
@@ -13,6 +20,7 @@ const DUMMY_QUOTES = [
 ];
 
 const QuoteDetail = () => {
+  const location = useLocation();
   const { id } = useParams();
 
   const quote = DUMMY_QUOTES.find((quote) => quote.id === parseInt(id));
@@ -24,6 +32,15 @@ const QuoteDetail = () => {
   return (
     <>
       <HighlightedQuote quote={quote} />
+
+      {location.pathname === `/quotes/${id}` && (
+        <div className="centered">
+          <Link to={`comments`} className="btn--flat">
+            Load Comments
+          </Link>
+        </div>
+      )}
+
       <Outlet />
     </>
   );
