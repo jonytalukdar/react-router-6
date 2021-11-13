@@ -1,30 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Outlet, Link, useLocation } from 'react-router-dom';
 import HighlightedQuote from '../components/quotes/HighlightedQuote';
-import NoQuotesFound from '../components/quotes/NoQuotesFound';
-
-const DUMMY_QUOTES = [
-  { id: 1, author: 'Joney', text: 'Learning React is Awesome' },
-  {
-    id: 2,
-    author: 'jerry',
-    text: 'JavaScript is Awesome to Learn',
-  },
-];
+import LoadingSpinner from '../components/UI/LoadingSpinner';
+import useHttp from '../hooks/hooks/use-http';
+import { getSingleQuote } from '../lib/lib/api';
 
 const QuoteDetail = () => {
+  const {
+    sendRequest,
+    status,
+    data: loadedQuote,
+    error,
+  } = useHttp(getSingleQuote);
+
   const location = useLocation();
   const { id } = useParams();
 
-  const quote = DUMMY_QUOTES.find((quote) => quote.id === parseInt(id));
+  useEffect(() => {
+    sendRequest(id);
+  }, [sendRequest, id]);
 
-  if (!quote) {
-    return <NoQuotesFound />;
+  if (status === 'pending') {
+    return (
+      <div className="centered">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="centered focused">{error}</p>;
+  }
+
+  if (!loadedQuote) {
+    return <h3 className="centered">No Quote Found</h3>;
   }
 
   return (
     <>
-      <HighlightedQuote quote={quote} />
+      <HighlightedQuote quote={loadedQuote} />
 
       {location.pathname === `/quotes/${id}` && (
         <div className="centered">

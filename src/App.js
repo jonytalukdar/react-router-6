@@ -5,7 +5,7 @@ import QuoteDetail from './pages/QuoteDetail';
 
 import Comments from './components/comments/Comments';
 import Layout from './components/layout/Layout';
-import NoQuotesFound from './components/quotes/NoQuotesFound';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         </Route>
 
         <Route path="/new-quote" element={<NewQuote />} />
-        <Route path="*" element={<NoQuotesFound />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Layout>
   );
