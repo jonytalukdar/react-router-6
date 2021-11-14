@@ -24,6 +24,14 @@ const MainNavigation = () => {
               New Quotes
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/login"
+              className={(navData) => (navData.isActive ? classes.active : '')}
+            >
+              Login
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>
