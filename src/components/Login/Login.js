@@ -1,9 +1,17 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../UI/LoadingSpinner';
+import { AuthContext } from '../../context/auth-context';
 
 import classes from './Login.module.css';
 
 const LoginForm = () => {
+  const { login } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -19,6 +27,7 @@ const LoginForm = () => {
 
     let url;
     if (isLogin) {
+      setIsLoading(true);
       url =
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBSDvLr4JdQ-AqPAaWJrwTYbysHzbyN0DQ';
     } else {
@@ -37,22 +46,34 @@ const LoginForm = () => {
       },
     })
       .then((res) => {
+        setIsLoading(false);
         if (res.ok) {
           return res.json();
         } else {
           return res.json().then((data) => {
+            setIsLoading(false);
             let errorMessage = data.error.message;
             throw new Error(errorMessage);
           });
         }
       })
       .then((data) => {
-        console.log(data);
+        login(data.idToken);
+        navigate('/quotes', { replace: true });
       })
       .catch((err) => {
+        setIsLoading(false);
         alert(err.message);
       });
   };
+
+  if (isLoading) {
+    return (
+      <div className="centered">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <section className={classes.auth}>
